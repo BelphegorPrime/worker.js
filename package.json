@@ -1,0 +1,39 @@
+{
+  "name": "@belphegorsprime/worker.js",
+  "version": "1.1.0",
+  "description": "simple web worker wrapper",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "prepublish": "tsc",
+    "publish": "npm publish --access=public",
+    "start": "node dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BelphegorPrime/worker.js.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BelphegorPrime/worker.js/issues"
+  },
+  "homepage": "https://github.com/BelphegorPrime/worker.js#readme",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "prettier": "1.18.2",
+    "rollup": "1.16.3",
+    "rollup-plugin-commonjs": "10.0.1",
+    "rollup-plugin-json": "4.0.0",
+    "rollup-plugin-terser": "5.0.0",
+    "rollup-plugin-typescript": "1.0.1",
+    "tslint": "5.18.0",
+    "tslint-config-prettier": "1.18.0",
+    "tslint-plugin-prettier": "2.0.1",
+    "typescript": "^3.5.2"
+  },
+  "peerDependencies": {}
+}
