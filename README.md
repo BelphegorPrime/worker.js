@@ -2,25 +2,37 @@
 Simple web worker wrapper with Promise support.
 
 ## Installation
-
 ```bash
 npm install @belphegorsprime/worker.js
 ```
 
 ## Usage
-
 ```javascript
 import workerJS from "@belphegorsprime/worker.js";
 
-const { worker, error } = workerJS(() => {
+/**
+ * worker: Worker
+ * data: Promise<any> 
+ * error: Error | null
+ */
+const { worker, data, error } = workerJS(() => {
     return fetch("https://pokeapi.co/api/v2/pokemon/1/").then(resp =>
       resp.json()
     );
   });
 if (!error) {
-worker.then(bulbasaur => console.log(bulbasaur));
+  data.then(bulbasaur => console.log(bulbasaur));
 }
 ```
+
+## API
+
+### workerJS(function)
+
+#### function
+
+Type: `function`
+
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.

@@ -1,4 +1,10 @@
-const fn2workerURL = (fn: Function) => {
+interface IWorkerJSType {
+  worker: Worker;
+  data: Promise<any>;
+  error: Error | null;
+}
+
+const functionToWorkerURL = (fn: Function): string => {
   const functionString = `
   self.addEventListener("message", async e => {
     let value = (${fn.toString()})()
@@ -15,40 +21,37 @@ const fn2workerURL = (fn: Function) => {
   return URL.createObjectURL(blob);
 };
 
-const returnError = (message: string) => {
+const main = (url: string) => {
+  const worker = new Worker(url);
   return {
-    worker: null,
-    error: new Error(message)
+    worker,
+    data: new Promise(resolve => {
+      worker.addEventListener("message", event => {
+        resolve(event.data);
+      });
+      worker.postMessage(null);
+    }),
+    error: null
   };
 };
 
-interface IWorkerJSType {
-  worker: Promise<any>;
-  error: Error | null;
-}
-
 const workerJS = (fn: Function | undefined): IWorkerJSType => {
+  const returnError = (message: string) => {
+    const error = new Error(message);
+    return {
+      worker: null,
+      data: Promise.reject(error),
+      error
+    };
+  };
+
   if (typeof Worker === "undefined") {
     return returnError("Your Browser does not support worker");
-  } else {
-    if (fn) {
-      const url = fn2workerURL(fn);
-      if (url) {
-        return {
-          worker: new Promise(resolve => {
-            const worker = new Worker(url);
-            worker.addEventListener("message", event => {
-              resolve(event.data);
-            });
-            worker.postMessage(null);
-          }),
-          error: null
-        };
-      }
-      return returnError("Couldn´t generate Blob-URL");
-    }
-    return returnError("There was no function provided");
   }
+  if (fn) {
+    return main(functionToWorkerURL(fn));
+  }
+  return returnError("There was no function provided");
 };
 
 export default workerJS;

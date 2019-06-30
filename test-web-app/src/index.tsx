@@ -8,9 +8,10 @@ function App() {
       resp.json()
     );
   };
-  const { worker, error } = workerJS(fn);
+  const { worker, data, error } = workerJS(fn);
   if (!error) {
-    worker.then(v => console.log(v));
+    console.log(worker);
+    data.then((v: any) => console.log(v));
   }
 
   return (
